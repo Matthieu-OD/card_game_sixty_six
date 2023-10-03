@@ -27,6 +27,15 @@ func main() {
 	}
 
 	e.Renderer = renderer
+
+	// viteURL, _ := url.Parse("http://localhost:5173")
+	// proxy := httputil.NewSingleHostReverseProxy(viteURL)
+	//
+	// e.GET("/", func(c echo.Context) error {
+	// 	proxy.ServeHTTP(c.Response(), c.Request())
+	// 	return nil
+	// })
+
 	e.GET("/something", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "template.html", map[string]interface{}{
 			"name": "Dolly!",
