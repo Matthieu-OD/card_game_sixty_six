@@ -7,20 +7,35 @@ import (
 	"net/http"
 )
 
-type Template struct {
+type TemplateRenderer struct {
 	templates *template.Template
 }
 
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	if viewContext, isMap := data.(map[string]interface{}); isMap {
+		viewContext["reverse"] = c.Echo().Reverse
+	}
+
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
 func main() {
 	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
 
-	e.Static("/static", "static")
-	e.Logger.Fatal(e.Start(":1323"))
+	renderer := &TemplateRenderer{
+		templates: template.Must(template.ParseGlob("public/views/*.html")),
+	}
+
+	e.Renderer = renderer
+	e.GET("/something", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "template.html", map[string]interface{}{
+			"name": "Dolly!",
+		})
+	}).Name = "foobar"
+
+	e.Logger.Fatal(e.Start(":8000"))
+}
+
+func Hello(c echo.Context) error {
+	return c.Render(http.StatusOK, "hello", "World")
 }
