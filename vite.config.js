@@ -1,19 +1,11 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
 
 export default defineConfig({
-  server: {
-    hmr: true, // Enable Hot Module Replacement
-  },
-  root: 'assets',
   build: {
-    manifest: 'manifest.json',
+    manifest: true,
     rollupOptions: {
-      input: {
-        main: '/assets/js/main.js', // TODO: to change to main.ts
-      },
+      // overwrite default .html entry
+      input: "./assets/js/main.js",
     },
-    // server: {
-    //   origin: 'http://127.0.0.1:8000',
-    // },
-  }
-})
+  },
+});
