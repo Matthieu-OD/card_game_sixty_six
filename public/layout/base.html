@@ -1,20 +1,19 @@
-{{define "base"}}
+{{define "layout/baseTop"}}
 <!Doctype html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  {{template "head_extra" .}}
 </head>
 
-<body class="bg-gray-800">
-  {{template "body_extra" .}}
+<body class="bg-gray-900 p-4">
+{{end}}
 
+{{define "layout/baseBot"}}
   <!-- only for dev -->
   <script type="module" src="http://localhost:5173/@vite/client"></script>
   <script type="module" src="http://localhost:5173/src/main.ts"></script>
 </body>
-
 </html>
 {{end}}
