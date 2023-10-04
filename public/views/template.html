@@ -2,22 +2,19 @@
 <html>
 
 <body>
-  <h1>Hello {{index . "name"}}</h1>
-  <!-- <div x-data={name: "test" }> -->
-  <!--   <span x-text={name}></span> -->
-  <!-- </div> -->
+  <h1 class="text-red-800">Hello {{index . "name"}}</h1>
+  <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
+  
+  
   <p>
     {{ with $x := index . "reverse" }}
-    {{ call $x "foobar" }} &lt;-- this will call the $x with parameter "foobar"
-    {{ end }}
+    {{ call $x "foobar" }} &lt;-- this will call the $x with parameter "foobar" {{ end }}
   </p>
+  <div></div>
 
-  <!-- <script type="module" src="/assets/js/main.compiled.js"></script> -->
-
-  <!-- if development -->
+  <!-- <div id="app"></div> -->
   <script type="module" src="http://localhost:5173/@vite/client"></script>
-  <!-- <script type="module" src="http://localhost:5173/main.js"></script> -->
-  <script type="module" src="http://localhost:5173/main.js"></script>
+  <script type="module" src="http://localhost:5173/src/main.ts"></script>
 </body>
 
 </html>
