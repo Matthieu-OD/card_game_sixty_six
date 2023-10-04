@@ -23,7 +23,7 @@ func main() {
 	e := echo.New()
 
 	renderer := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("public/views/*.html")),
+		templates: template.Must(template.ParseGlob("public/*.html")),
 	}
 
 	e.Renderer = renderer

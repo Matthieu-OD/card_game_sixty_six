@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html>
+{{template "base" .}}
+{{define "head_extra"}}
+<title>Test</title>
+{{end}}
 
-<body>
-  <h1 class="text-red-800">Hello {{index . "name"}}</h1>
-  <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
-  
-  
-  <p>
-    {{ with $x := index . "reverse" }}
-    {{ call $x "foobar" }} &lt;-- this will call the $x with parameter "foobar" {{ end }}
-  </p>
-  <div></div>
+{{define "body_extra"}}
+<h1 class="text-red-800">Hello {{index . "name"}}</h1>
+<h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
 
-  <!-- <div id="app"></div> -->
-  <script type="module" src="http://localhost:5173/@vite/client"></script>
-  <script type="module" src="http://localhost:5173/src/main.ts"></script>
-</body>
+{{template "table" .}} 
 
-</html>
+<p>
+  {{ with $x := index . "reverse" }}
+  {{ call $x "foobar" }} &lt;-- this will call the $x with parameter "foobar" {{ end }}
+</p>
+{{end}}
