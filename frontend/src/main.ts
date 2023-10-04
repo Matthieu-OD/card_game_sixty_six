@@ -1,6 +1,7 @@
 import 'vite/modulepreload-polyfill'
 
-import Alpine from "alpinejs"
+import './style.css'
+import Alpine from 'alpinejs'
 
 window.Alpine = Alpine
 
