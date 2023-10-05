@@ -1,0 +1,63 @@
+{{define "views/game"}}
+{{template "layout/baseTop" .}}
+<div class="grid grid-cols-7 grid-rows-4 place-items-center min-h-screen">
+
+  <!-- top row -->
+  <div class="row-span-1 col-span-2 text-center rounded-md border-white border text-white p-2">
+    <div>Score</div>
+    <div>1 - 4</div>
+  </div>
+  <div class="col-span-3 flex space-x-2">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+  </div>
+
+  <div class="col-span-2 text-center rounded-md border-white border text-white p-2 max-w-[8rem]">
+    <div>Last fold</div>
+    <div class="flex space-x-2">
+      <img src="/static/img/cards/fronts/hearts_2.svg" class="card-front" alt="back card">
+      <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    </div>
+  </div>
+
+  <!-- middle of the board -->
+  <div class="col-start-1 col-end-3 row-start-2">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+  </div>
+
+  <div class="row-start-2 row-end-4 col-start-1 col-end-8 flex place-items-center space-x-10">
+    <div class="col-span-2 row-start-2 row-end-4 flex space-x-2">
+      <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+      <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    </div>
+    <div class="col-span-2 row-start-2 row-end-4 flex place-items-center"> <img src="/static/img/cards/fronts/clubs_2.svg" class="card-front rotate-90 -mr-5" alt="front card">
+      <img src="/static/img/cards/backs/red.svg" class="card-back z-10" alt="back card">
+    </div>
+  </div>
+
+  <div class="col-start-1 col-end-3 row-start-3">
+    <img src="/static/img/cards/backs/red.svg" class="card-back" alt="back card">
+  </div>
+
+  <div class="col-start-3 col-end-6 flex space-x-2">
+    <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+    <img src="/static/img/cards/fronts/clubs_ace.svg" class="card-front" alt="back card">
+  </div>
+
+  <div class="row-start-4 col-start-6 col-span-2 flex flex-col text-center rounded-md border-white border text-md text-white p-2">
+    <button class="border bg-indigo-500 rounded-md">closing the card stock</button>
+    <button class="border bg-indigo-500 rounded-md w-full">66 game over</button>
+    <button class="border bg-indigo-500 rounded-md w-full">wedding</button>
+  </div>
+</div>
+
+{{template "layout/baseBot" .}}
+{{end}}

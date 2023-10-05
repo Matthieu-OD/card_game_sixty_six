@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.card-back {
+	@apply h-20 w-10 pointer-events-none;
+}
+.card-front {
+	@apply h-14 w-10 pointer-events-none;
+}

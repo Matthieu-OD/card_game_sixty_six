@@ -1,0 +1,15 @@
+{{define "views/waiting"}}
+{{template "layout/baseTop" .}}
+<div class="p-4 min-h-screen flex flex-col justify-center text-center">
+    <div class="text-2xl text-gray-100">
+      Waiting for opponent...
+    </div>
+    <div class="text-lg text-gray-300">
+      Give this url to join:
+      <div>url + copy button</div>
+      and the password (conditional depending if it has been set during the creation of the game)
+      Add a spinner
+    </div>
+</div>
+{{template "layout/baseBot" .}}
+{{end}}
