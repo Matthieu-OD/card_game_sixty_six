@@ -36,6 +36,7 @@ type Card struct {
 }
 
 type Game struct {
+	GameID          GameID
 	Player1         Player
 	Player2         Player
 	Stack           []Card
