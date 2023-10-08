@@ -1,8 +1,8 @@
 package redidsclient
 
 import (
-	"Matthieu-OD/card_game_sixty_six/server/card"
-	"encoding/json"
+	// "Matthieu-OD/card_game_sixty_six/server/card"
+	// "encoding/json"
 
 	"github.com/redis/go-redis/v9"
 
@@ -32,18 +32,18 @@ func NewRedisClient() *redis.Client {
 	return c
 }
 
-func StoreGame(c redis.Client, g card.Game) error {
-	gameJSON, err := json.Marshal(g)
-	if err != nil {
-		return fmt.Errorf("failed to serialize game: %w", err)
-	}
-
-	err = rdb.Set
-}
-
-func GetGame(id string) (card.Game, error) {
-	return
-}
+// func StoreGame(c redis.Client, g card.Game) error {
+//  gameJSON, err := json.Marshal(g)
+// 	if err != nil {
+// 		return fmt.Errorf("failed to serialize game: %w", err)
+// 	}
+//
+// 	err = rdb.Set
+// }
+//
+// func GetGame(id string) (card.Game, error) {
+// 	return
+// }
 
 func checkConnection(c *redis.Client) error {
 	// Use Ping to check the connection
