@@ -51,6 +51,7 @@ func main() {
 	e.GET("/game", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/game", map[string]interface{}{})
 	}).Name = "game"
+	// TODO: write the JS websocket client using HTMX
 	e.GET("/ws/:id", wsGame).Name = "gameWebsocket"
 
 	e.Logger.Fatal(e.Start(":8000"))

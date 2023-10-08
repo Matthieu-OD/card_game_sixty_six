@@ -20,7 +20,6 @@ func NewRedisClient() *redis.Client {
 		DB:       0,
 	})
 
-	// check the connection
 	err := checkConnection(c)
 
 	if err != nil {
@@ -46,10 +45,27 @@ func NewRedisClient() *redis.Client {
 // }
 
 func checkConnection(c *redis.Client) error {
-	// Use Ping to check the connection
 	pong, err := c.Ping(ctx).Result()
 	fmt.Println(pong, err)
 	return err
+}
+
+func storeGameID(c *redis.Client, id string) error {
+	err := c.Set(ctx, "game-id", id, 0).Err()
+	return err
+}
+
+func deleteGamID(c *redis.Client, id string) error {
+	_, err := c.Del(ctx, id).Result()
+	return err
+}
+
+func idExists(c *redis.Client, id string) (bool, error) {
+	exists, err := c.Exists(ctx, id).Result()
+	if err != nil {
+		return false, err
+	}
+	return exists > 0, nil
 }
 
 // TODO: add function to add a new party data
