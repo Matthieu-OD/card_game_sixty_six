@@ -5,8 +5,9 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 
-	// "Matthieu-OD/card_game_sixty_six/server/redis"
+	"Matthieu-OD/card_game_sixty_six/server/redis"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
@@ -39,15 +40,22 @@ func main() {
 
 	// list all the routes of the application
 	e.GET("/", func(c echo.Context) error {
-		createNewGameURL := c.Echo().Reverse("createNewGame")
-		return c.Render(http.StatusOK, "views/home", map[string]interface{}{
-			"CreateNewGameURL": createNewGameURL,
-		})
+		return c.Render(http.StatusOK, "views/home", map[string]interface{}{})
 	}).Name = "home"
+
 	e.GET("/create-new-game", createNewGame).Name = "createNewGame"
+	e.GET("/join-game/:gameid", joinGame).Name = "joinGame"
+	// TODO: add the different link to join the game
 	e.GET("/waiting-opponent/:gameid", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "views/waiting", map[string]interface{}{})
+		return c.Render(http.StatusOK, "views/waiting", map[string]interface{}{
+			"JoinGameURL": &url.URL{
+				Scheme: c.Scheme(),
+				Host:   c.Request().Host,
+				Path:   c.Echo().Reverse("joinGame", c.Param("gameid")),
+			},
+		})
 	}).Name = "waitingOpponent"
+
 	e.GET("/game", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/game", map[string]interface{}{})
 	}).Name = "game"
@@ -62,11 +70,21 @@ var (
 )
 
 func createNewGame(c echo.Context) error {
-	// TODO: create a new uuid and add it to the redis server
+	gameid := uuid.NewString()
 
-	gameID := uuid.NewString()
-	waitingOpponentURL := c.Echo().Reverse("waitingOpponent", gameID)
+	rdbClient := redisDB.NewRedisClient()
+
+	redisDB.StoreGameid(rdbClient, gameid)
+
+	waitingOpponentURL := c.Echo().Reverse("waitingOpponent", gameid)
 	return c.Redirect(http.StatusPermanentRedirect, waitingOpponentURL)
+}
+
+func joinGame(c echo.Context) error {
+	// gameid := c.Param("gameid")
+	// TODO: get the game id from the url
+	// TODO: see if it correspond to an existing game in the redis db
+	return nil
 }
 
 func wsGame(c echo.Context) error {

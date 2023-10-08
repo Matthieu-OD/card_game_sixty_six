@@ -1,4 +1,4 @@
-package redidsclient
+package redisDB
 
 import (
 	// "Matthieu-OD/card_game_sixty_six/server/card"
@@ -50,17 +50,17 @@ func checkConnection(c *redis.Client) error {
 	return err
 }
 
-func storeGameID(c *redis.Client, id string) error {
+func StoreGameid(c *redis.Client, id string) error {
 	err := c.Set(ctx, "game-id", id, 0).Err()
 	return err
 }
 
-func deleteGamID(c *redis.Client, id string) error {
+func DeleteGameid(c *redis.Client, id string) error {
 	_, err := c.Del(ctx, id).Result()
 	return err
 }
 
-func idExists(c *redis.Client, id string) (bool, error) {
+func IdExists(c *redis.Client, id string) (bool, error) {
 	exists, err := c.Exists(ctx, id).Result()
 	if err != nil {
 		return false, err
