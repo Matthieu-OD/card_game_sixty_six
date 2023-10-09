@@ -44,8 +44,6 @@ func main() {
 	}).Name = "home"
 
 	e.GET("/create-new-game", createNewGame).Name = "createNewGame"
-	e.GET("/join-game/:gameid", joinGame).Name = "joinGame"
-	// TODO: add the different link to join the game
 	e.GET("/waiting-opponent/:gameid", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/waiting", map[string]interface{}{
 			"JoinGameURL": &url.URL{
@@ -55,6 +53,7 @@ func main() {
 			},
 		})
 	}).Name = "waitingOpponent"
+	e.GET("/join-game/:gameid", joinGame).Name = "joinGame"
 
 	e.GET("/game", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/game", map[string]interface{}{})

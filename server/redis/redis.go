@@ -1,8 +1,7 @@
 package redisDB
 
 import (
-	// "Matthieu-OD/card_game_sixty_six/server/card"
-	// "encoding/json"
+	"Matthieu-OD/card_game_sixty_six/server/game"
 
 	"github.com/redis/go-redis/v9"
 
@@ -31,19 +30,6 @@ func NewRedisClient() *redis.Client {
 	return c
 }
 
-// func StoreGame(c redis.Client, g card.Game) error {
-//  gameJSON, err := json.Marshal(g)
-// 	if err != nil {
-// 		return fmt.Errorf("failed to serialize game: %w", err)
-// 	}
-//
-// 	err = rdb.Set
-// }
-//
-// func GetGame(id string) (card.Game, error) {
-// 	return
-// }
-
 func checkConnection(c *redis.Client) error {
 	pong, err := c.Ping(ctx).Result()
 	fmt.Println(pong, err)
@@ -53,6 +39,10 @@ func checkConnection(c *redis.Client) error {
 func StoreGameid(c *redis.Client, id string) error {
 	err := c.Set(ctx, "game-id", id, 0).Err()
 	return err
+}
+
+func StoreGame(c *redis.Client, game game.Game) error {
+	return nil
 }
 
 func DeleteGameid(c *redis.Client, id string) error {
