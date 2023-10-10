@@ -1,15 +1,17 @@
 package main
 
 import (
+	"database/sql"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 
-	"Matthieu-OD/card_game_sixty_six/server/redis"
-
 	"github.com/google/uuid"
+
+	_ "modernc.org/sqlite"
+
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -27,6 +29,14 @@ func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c 
 }
 
 func main() {
+	// TODO: create func to create the db and the needed tables
+	db, err := sql.Open("sqlite", ":memory:")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	log.Printf("db: %v\n", db)
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -53,7 +63,6 @@ func main() {
 			},
 		})
 	}).Name = "waitingOpponent"
-	e.GET("/join-game/:gameid", joinGame).Name = "joinGame"
 
 	e.GET("/game", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/game", map[string]interface{}{})
@@ -71,9 +80,9 @@ var (
 func createNewGame(c echo.Context) error {
 	gameid := uuid.NewString()
 
-	rdbClient := redisDB.NewRedisClient()
+	// rdbClient := redisDB.NewRedisClient()
 
-	redisDB.StoreGameid(rdbClient, gameid)
+	// redisDB.StoreGameid(rdbClient, gameid)
 
 	waitingOpponentURL := c.Echo().Reverse("waitingOpponent", gameid)
 	return c.Redirect(http.StatusPermanentRedirect, waitingOpponentURL)

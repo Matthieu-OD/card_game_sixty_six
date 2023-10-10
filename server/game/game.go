@@ -1,40 +1,46 @@
 package game
 
-import (
-	"encoding/json"
-)
-
 type GameID string
 
 type Game struct {
-	GameID       GameID
-	Player2Ready bool
+	GameID        GameID
+	OpponentReady bool
 
-	Player1Hand [6]Card
-	Player2Hand [6]Card
+	Player1Hand []Card
+	Player2Hand []Card
 
-	PlayingCards [2]Card
+	PlayingCards []Card
 	Stack        []Card
 	Asset        Card
-	LastFold     [2]Card
+	LastFold     []Card
 
-	Player1Score int
-	Player2Score int
-	TotalScore   [2]int
+	GameScore1  int
+	TotalScore1 int
+	GameScore2  int
+	TotalScore2 int
+
+	Turn int
 }
 
-func gameToHash(g Game) (map[string]interface{}, error) {
+func (g Game) GameToHash() (map[string]interface{}, error) {
 	gameHash := make(map[string]interface{})
 
 	gameHash["GameID"] = g.GameID
-	gameHash["Player2Ready"] = g.Player2Ready
+	gameHash["OpponentReady"] = g.OpponentReady
 
-	gameHash["Player1Hand"] = stackToString(g.Player1Hand)
+	gameHash["Player1Hand"] = stackToStringStack(g.Player1Hand)
+	gameHash["Player2Hand"] = stackToStringStack(g.Player2Hand)
 
-	gameHash["TotalScore"] = g.TotalScore
-	gameHash["GameScore"] = g.GameScore
-	gameHash["CurrentStage"] = g.CurrentStage
-	gameHash["LastRoundWinner"] = g.LastRoundWinner
+	gameHash["PlayingCards"] = stackToStringStack(g.PlayingCards)
+	gameHash["Stack"] = stackToStringStack(g.Stack)
+	gameHash["Asset"] = g.Asset.toString()
+	gameHash["LastFold"] = stackToStringStack(g.LastFold)
+
+	gameHash["TotalScore1"] = g.TotalScore1
+	gameHash["TotalScore2"] = g.TotalScore2
+	gameHash["GameScore1"] = g.GameScore1
+	gameHash["GameScore2"] = g.GameScore2
+	gameHash["Turn"] = g.Turn
 
 	return gameHash, nil
 }
