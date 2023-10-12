@@ -1,12 +1,13 @@
 package main
 
 import (
-	"database/sql"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
+
+	"Matthieu-OD/card_game_sixty_six/server/sql"
 
 	"github.com/google/uuid"
 
@@ -29,13 +30,8 @@ func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c 
 }
 
 func main() {
-	// TODO: create func to create the db and the needed tables
-	db, err := sql.Open("sqlite", ":memory:")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-	log.Printf("db: %v\n", db)
+	sqldb, _ := db.SetupDB()
+	defer sqldb.Close()
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -80,9 +76,7 @@ var (
 func createNewGame(c echo.Context) error {
 	gameid := uuid.NewString()
 
-	// rdbClient := redisDB.NewRedisClient()
-
-	// redisDB.StoreGameid(rdbClient, gameid)
+	// TODO: save the gameid in sql db
 
 	waitingOpponentURL := c.Echo().Reverse("waitingOpponent", gameid)
 	return c.Redirect(http.StatusPermanentRedirect, waitingOpponentURL)

@@ -27,6 +27,7 @@ const (
 )
 
 type Card struct {
+	ID     int
 	Suit   CardSuit
 	Value  CardValue
 	Points int
