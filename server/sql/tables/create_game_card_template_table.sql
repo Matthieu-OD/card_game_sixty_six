@@ -1,5 +1,5 @@
-CREATE TABLE {{.TableName}} (
-	game_id UUID NOT NULL,
+CREATE TABLE IF NOT EXISTS {{.TableName}} (
+	game_id TEXT NOT NULL,
 	card_id INT NOT NULL,
 	FOREIGN KEY (game_id) REFERENCES game(id),
 	FOREIGN KEY (card_id) REFERENCES card(id),

@@ -1,0 +1,170 @@
+[
+	{
+		"id": 1,
+		"suit": "spades",
+		"value": "ace",
+		"points": 11
+	},
+	{
+		"id": 2,
+		"suit": "spades",
+		"value": "king",
+		"points": 4
+	},
+	{
+		"id": 3,
+		"suit": "spades",
+		"value": "queen",
+		"points": 3
+	},
+	{
+		"id": 4,
+		"suit": "spades",
+		"value": "jack",
+		"points": 2
+	},
+	{
+		"id": 5,
+		"suit": "spades",
+		"value": "ten",
+		"points": 10
+	},
+	{
+		"id": 6,
+		"suit": "spades",
+		"value": "9",
+		"points": 0
+	},
+	{
+		"id": 7,
+		"suit": "spades",
+		"value": "8",
+		"points": 0
+	},
+	{
+		"id": 8,
+		"suit": "heats",
+		"value": "ace",
+		"points": 11
+	},
+	{
+		"id": 9,
+		"suit": "heats",
+		"value": "king",
+		"points": 4
+	},
+	{
+		"id": 10,
+		"suit": "heats",
+		"value": "queen",
+		"points": 3
+	},
+	{
+		"id": 11,
+		"suit": "heats",
+		"value": "jack",
+		"points": 2
+	},
+	{
+		"id": 12,
+		"suit": "heats",
+		"value": "ten",
+		"points": 10
+	},
+	{
+		"id": 13,
+		"suit": "heats",
+		"value": "9",
+		"points": 0
+	},
+	{
+		"id": 14,
+		"suit": "heats",
+		"value": "8",
+		"points": 0
+	},
+	{
+		"id": 15,
+		"suit": "clubs",
+		"value": "ace",
+		"points": 11
+	},
+	{
+		"id": 16,
+		"suit": "clubs",
+		"value": "king",
+		"points": 4
+	},
+	{
+		"id": 17,
+		"suit": "clubs",
+		"value": "queen",
+		"points": 3
+	},
+	{
+		"id": 18,
+		"suit": "clubs",
+		"value": "jack",
+		"points": 2
+	},
+	{
+		"id": 19,
+		"suit": "clubs",
+		"value": "ten",
+		"points": 10
+	},
+	{
+		"id": 20,
+		"suit": "clubs",
+		"value": "9",
+		"points": 0
+	},
+	{
+		"id": 21,
+		"suit": "clubs",
+		"value": "8",
+		"points": 0
+	},
+	{
+		"id": 22,
+		"suit": "diamonds",
+		"value": "ace",
+		"points": 11
+	},
+	{
+		"id": 23,
+		"suit": "diamonds",
+		"value": "king",
+		"points": 4
+	},
+	{
+		"id": 24,
+		"suit": "diamonds",
+		"value": "queen",
+		"points": 3
+	},
+	{
+		"id": 25,
+		"suit": "diamonds",
+		"value": "jack",
+		"points": 2
+	},
+	{
+		"id": 26,
+		"suit": "diamonds",
+		"value": "ten",
+		"points": 10
+	},
+	{
+		"id": 27,
+		"suit": "diamonds",
+		"value": "9",
+		"points": 0
+	},
+	{
+		"id": 28,
+		"suit": "diamonds",
+		"value": "8",
+		"points": 0
+	}
+]
