@@ -10,13 +10,13 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"Matthieu-OD/card_game_sixty_six/server/game"
+	"Matthieu-OD/card_game_sixty_six/cmd/game"
 )
 
 // TODO: create add, get, update, delete functions
 func CreateDB() *sql.DB {
 	// NOTE: use in memory database in production?
-	db, err := sql.Open("sqlite", "./server/sql/database.db?_foreign_keys=(1)")
+	db, err := sql.Open("sqlite", "./data/database.db?_foreign_keys=(1)")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func CreateTables(ctx context.Context, db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	sqlFilesPath := path + "/server/sql/tables/"
+	sqlFilesPath := path + "/scrips/sql/tables/"
 
 	// TODO: use a global variable for the path to sql files
 	files, err := os.ReadDir(sqlFilesPath)
@@ -71,7 +71,7 @@ func PopulateDB(ctx context.Context, db *sql.DB) {
 		return
 	}
 
-	cardsData, err := os.ReadFile("./server/sql/data/cards.json")
+	cardsData, err := os.ReadFile("./data/cards.json")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"Matthieu-OD/card_game_sixty_six/server/sql"
+	"Matthieu-OD/card_game_sixty_six/cmd/sql"
 
 	"github.com/google/uuid"
 
@@ -36,10 +36,10 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Static("/static", "assets")
+	e.Static("/static", "web/assets")
 
 	renderer := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("templates/**/*.html")),
+		templates: template.Must(template.ParseGlob("web/templates/**/*.html")),
 	}
 
 	e.Renderer = renderer
