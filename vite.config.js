@@ -15,7 +15,7 @@ export default defineConfig({
       input: 'assets/js/main.ts',
       output: {
         file: 'main.compiled.js',
-        dir: 'dist'
+        dir: 'web/dist'
       }
     }
   }
