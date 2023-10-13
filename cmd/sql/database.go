@@ -35,7 +35,7 @@ func CreateTables(ctx context.Context, db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	sqlFilesPath := path + "/scrips/sql/tables/"
+	sqlFilesPath := path + "/scripts/sql/tables/"
 
 	// TODO: use a global variable for the path to sql files
 	files, err := os.ReadDir(sqlFilesPath)

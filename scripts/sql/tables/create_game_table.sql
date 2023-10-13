@@ -10,6 +10,5 @@ CREATE TABLE IF NOT EXISTS game (
 
 	turn TEXT CHECK(turn IN ('player1', 'player2')) NOT NULL DEFAULT 'player1',
 
-	FOREIGN KEY (asset_card_id) REFERENCES card(id)
-
+	FOREIGN KEY (asset_card_id) REFERENCES card(id) ON DELETE SET CASCADE
 )

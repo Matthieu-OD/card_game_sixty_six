@@ -12,7 +12,7 @@ export default defineConfig({
     manifest: true,
 
     rollupOptions: {
-      input: 'assets/js/main.ts',
+      input: 'web/assets/js/main.ts',
       output: {
         file: 'main.compiled.js',
         dir: 'web/dist'
