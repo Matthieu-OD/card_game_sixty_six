@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"strings"
 
 	_ "modernc.org/sqlite"
 
@@ -47,11 +46,6 @@ func CreateTables(ctx context.Context, db *sql.DB) {
 		data, err := os.ReadFile(sqlFilesPath + file.Name())
 		if err != nil {
 			log.Fatal(err)
-		}
-
-		// TODO: take care of the template files
-		if strings.Contains(file.Name(), "template") {
-			continue
 		}
 
 		_, err = db.ExecContext(ctx, string(data))

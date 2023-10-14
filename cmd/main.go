@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"html/template"
 	"io"
 	"log"
@@ -30,7 +32,7 @@ func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c 
 }
 
 func main() {
-	sqldb, _ := db.SetupDB()
+	sqldb, ctx := db.SetupDB()
 	defer sqldb.Close()
 
 	e := echo.New()
@@ -49,7 +51,10 @@ func main() {
 		return c.Render(http.StatusOK, "views/home", map[string]interface{}{})
 	}).Name = "home"
 
-	e.GET("/create-new-game", createNewGame).Name = "createNewGame"
+	e.GET("/create-new-game", func(c echo.Context) error {
+		log.Println("creating new game")
+		return createNewGame(c, sqldb, ctx)
+	}).Name = "createNewGame"
 	e.GET("/waiting-opponent/:gameid", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/waiting", map[string]interface{}{
 			"JoinGameURL": &url.URL{
@@ -73,10 +78,13 @@ var (
 	upgrader = websocket.Upgrader{}
 )
 
-func createNewGame(c echo.Context) error {
+func createNewGame(c echo.Context, sqldb *sql.DB, ctx context.Context) error {
 	gameid := uuid.NewString()
 
-	// TODO: save the gameid in sql db
+	db.CreateEmptyGame(sqldb, ctx, gameid)
+	res := db.GetGame(sqldb, ctx, gameid)
+	log.Println(res)
+	panic("not implemented")
 
 	waitingOpponentURL := c.Echo().Reverse("waitingOpponent", gameid)
 	return c.Redirect(http.StatusPermanentRedirect, waitingOpponentURL)
