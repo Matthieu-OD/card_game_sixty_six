@@ -1,4 +1,4 @@
-UPDATE game SET 
+UPDATE game SET opponent_ready = TRUE WHERE id = ?;
 
 
 CREATE TABLE IF NOT EXISTS game (
