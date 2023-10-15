@@ -5,15 +5,15 @@ tmp_dir = "tmp"
 [build]
   args_bin = []
   bin = "./tmp/main"
-  cmd = "go build -o ./tmp/main ./cmd"
+  cmd = "go build -o ./tmp/main ./cmd/main.go"
   delay = 0
-  exclude_dir = ["assets", "node_modules", "tmp", "vendor", "testdata"]
+  exclude_dir = ["web/assets/img", "node_modules", "tmp", "vendor", "testdata"]
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
   follow_symlink = false
   full_bin = ""
-  include_dir = []
+  include_dir = ["cmd", "web/templates", "web/assets/js", "scripts"]
   include_ext = ["go", "tpl", "tmpl", "html"]
   include_file = []
   kill_delay = "0s"
@@ -37,8 +37,8 @@ tmp_dir = "tmp"
   time = true
 
 [misc]
-  clean_on_exit = false
+  clean_on_exit = true
 
 [screen]
-  clear_on_rebuild = false
+  clear_on_rebuild = true
   keep_scroll = true
