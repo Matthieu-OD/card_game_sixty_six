@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS game (
 	total_score1 INTEGER NOT NULL DEFAULT 0,
 	total_score2 INTEGER NOT NULL DEFAULT 0,
 
-	turn TEXT CHECK(turn IN ('player1', 'player2')) NOT NULL DEFAULT 'player1',
+	turn TEXT CHECK(turn IN (1, 2)) NOT NULL DEFAULT 1,
 
 	FOREIGN KEY (asset_card_id) REFERENCES card(id)
 )

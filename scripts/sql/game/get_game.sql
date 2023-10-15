@@ -1,1 +1,1 @@
-SELECT * from "game" where "id" = {{.GameID}};
+SELECT * from "game" where "id" = $1;

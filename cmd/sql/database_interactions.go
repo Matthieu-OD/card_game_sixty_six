@@ -3,9 +3,10 @@ package db
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
+
+	"Matthieu-OD/card_game_sixty_six/cmd/game"
 )
 
 func getPathSQL() string {
@@ -21,20 +22,35 @@ func CreateEmptyGame(db *sql.DB, ctx context.Context, gameid string) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := db.ExecContext(ctx, string(sql), gameid)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(res)
+
+	stmt, err := db.PrepareContext(ctx, string(sql))
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, gameid)
 	return err
 }
 
-func GetGame(db *sql.DB, ctx context.Context, gameid string) *sql.Row {
+func GetGame(db *sql.DB, ctx context.Context, gameid string) game.Game {
 	sql, err := os.ReadFile(getPathSQL() + "get_game.sql")
 	if err != nil {
 		log.Fatal(err)
 	}
-	row := db.QueryRowContext(ctx, string(sql), gameid)
-	fmt.Println(row)
-	return row
+
+	var game game.Game
+	err = db.QueryRowContext(ctx, string(sql), gameid).Scan(
+		&game.GameID,
+		&game.OpponentReady,
+		&game.Asset,
+		&game.RoundScore1,
+		&game.RoundScore2,
+		&game.TotalScore1,
+		&game.TotalScore2,
+		&game.Turn,
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return game
 }

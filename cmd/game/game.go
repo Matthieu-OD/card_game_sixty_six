@@ -9,7 +9,7 @@ type Game struct {
 
 	PlayingCards []Card
 	Stack        []Card
-	Asset        Card
+	Asset        *Card
 	LastFold     []Card
 
 	RoundScore1 int

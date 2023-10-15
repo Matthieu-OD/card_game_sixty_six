@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"html/template"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 
@@ -46,15 +45,15 @@ func main() {
 
 	e.Renderer = renderer
 
-	// list all the routes of the application
+	// app routes
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/home", map[string]interface{}{})
 	}).Name = "home"
 
 	e.GET("/create-new-game", func(c echo.Context) error {
-		log.Println("creating new game")
 		return createNewGame(c, sqldb, ctx)
 	}).Name = "createNewGame"
+
 	e.GET("/waiting-opponent/:gameid", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/waiting", map[string]interface{}{
 			"JoinGameURL": &url.URL{
@@ -81,10 +80,12 @@ var (
 func createNewGame(c echo.Context, sqldb *sql.DB, ctx context.Context) error {
 	gameid := uuid.NewString()
 
-	db.CreateEmptyGame(sqldb, ctx, gameid)
+	err := db.CreateEmptyGame(sqldb, ctx, gameid)
+	if err != nil {
+		c.Logger().Fatal(err)
+	}
 	res := db.GetGame(sqldb, ctx, gameid)
-	log.Println(res)
-	panic("not implemented")
+	c.Logger().Printf("%v", res)
 
 	waitingOpponentURL := c.Echo().Reverse("waitingOpponent", gameid)
 	return c.Redirect(http.StatusPermanentRedirect, waitingOpponentURL)
@@ -117,6 +118,6 @@ func wsGame(c echo.Context) error {
 			c.Logger().Error(err)
 
 		}
-		log.Printf("%s\n", msg)
+		c.Logger().Printf("%s\n", msg)
 	}
 }

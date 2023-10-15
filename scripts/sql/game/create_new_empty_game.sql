@@ -1,1 +1,2 @@
-INSERT  INTO game (game_id)
+INSERT INTO game (id)
+VALUES ($1)
