@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -35,7 +36,9 @@ func main() {
 	defer sqldb.Close()
 
 	e := echo.New()
-	e.Use(middleware.Logger())
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
 	e.Use(middleware.Recover())
 	e.Static("/static", "web/assets")
 
@@ -64,7 +67,26 @@ func main() {
 		})
 	}).Name = "waitingOpponent"
 
-	e.GET("/game", func(c echo.Context) error {
+	e.GET("/join-game/:gameid", func(c echo.Context) error {
+		// NOTE: check that no oppoenent is in the game
+		gameid := c.Param("gameid")
+
+		if !db.GetOpponentReady(sqldb, ctx, gameid) {
+			err := db.UpdateOpponentReady(sqldb, ctx, gameid, true)
+			if err != nil {
+				c.Logger().Error(err)
+			}
+			return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("game", c.Param("gameid")))
+		} else {
+			return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("gameFull"))
+		}
+	}).Name = "joinGame"
+
+	e.GET("/game-full", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "views/gamefull", map[string]interface{}{})
+	}).Name = "gameFull"
+
+	e.GET("/game/:gameid", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "views/game", map[string]interface{}{})
 	}).Name = "game"
 	// TODO: write the JS websocket client using HTMX
@@ -74,7 +96,11 @@ func main() {
 }
 
 var (
-	upgrader = websocket.Upgrader{}
+	upgrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
 )
 
 func createNewGame(c echo.Context, sqldb *sql.DB, ctx context.Context) error {
@@ -101,6 +127,7 @@ func joinGame(c echo.Context) error {
 func wsGame(c echo.Context) error {
 	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
+		log.Println("Websocket upgrade error: ", err)
 		return err
 	}
 	defer ws.Close()
@@ -113,11 +140,12 @@ func wsGame(c echo.Context) error {
 		}
 
 		// Read
-		_, msg, err := ws.ReadMessage()
+		_, _, err = ws.ReadMessage()
+		// _, msg, err := ws.ReadMessage()
 		if err != nil {
 			c.Logger().Error(err)
 
 		}
-		c.Logger().Printf("%s\n", msg)
+		// c.Logger().Printf("%s\n", msg)
 	}
 }

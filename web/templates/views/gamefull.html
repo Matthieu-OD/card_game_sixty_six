@@ -1,0 +1,14 @@
+{{define "views/gamefull"}}
+{{template "layout/baseTop" .}}
+<div class="p-4 min-h-screen flex flex-col justify-center text-center">
+    <div class="text-2xl text-gray-100">
+      The game you are trying to join is full.
+    </div>
+    <div class="text-lg text-gray-300">
+      Please navigate to the home page and create a new game.
+      <a href={{call .reverse "home"}}>home</a>
+          
+    </div>
+</div>
+{{template "layout/baseBot" .}}
+{{end}}
