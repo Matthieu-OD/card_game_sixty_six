@@ -111,7 +111,6 @@ func waitingOpponent(c echo.Context) error {
 }
 
 func joinGame(c echo.Context) error {
-	// TODO: check if the game is full from the db or implement another way
 	gameid := c.Param("gameid")
 
 	eventChan, exists := game.GameIDToEventChan[gameid]
@@ -136,9 +135,6 @@ func sseGame(c echo.Context) error {
 		eventChan = make(chan string)
 		game.GameIDToEventChan[gameid] = eventChan
 	}
-
-	fmt.Printf("SSE connection started for game %v", gameid)
-	fmt.Printf("game event chan %v", game.GameIDToEventChan)
 
 	c.Response().Header().Set("Content-Type", "text/event-stream")
 	c.Response().Header().Set("Cache-Control", "no-cache")

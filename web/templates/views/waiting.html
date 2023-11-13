@@ -1,9 +1,8 @@
 {{define "views/waiting"}}
 {{template "layout/baseTop" .}}
 <div class="p-4 min-h-screen flex flex-col justify-center text-center">
-  <div hx-ext="sse" sse-connect={{.SseURL}} sse-swap="message" class="text-white">
-    Contents of this box will be updated in real time with every
-    message received from the server.
+  <div hx-ext="sse" sse-connect={{.SseURL}} class="text-white">
+    <div hx-get={{.GameURL}} hx-trigger="sse:message" hx-target="body" hx-push-url="true"></div>
   </div>
 
   <div class="text-2xl text-gray-100">
