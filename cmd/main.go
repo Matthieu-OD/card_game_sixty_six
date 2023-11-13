@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"net/url"
 
-	"time"
-
 	"Matthieu-OD/card_game_sixty_six/cmd/dbutils"
 	"Matthieu-OD/card_game_sixty_six/cmd/game"
 	"Matthieu-OD/card_game_sixty_six/cmd/wsutils"
@@ -113,18 +111,18 @@ func waitingOpponent(c echo.Context) error {
 }
 
 func joinGame(c echo.Context) error {
+	// TODO: check if the game is full from the db or implement another way
 	gameid := c.Param("gameid")
 
 	eventChan, exists := game.GameIDToEventChan[gameid]
 	fmt.Printf("eventChan %v, exists %v", eventChan, exists)
 
 	if exists {
-		fmt.Printf("here")
-		eventChan <- "start"
-		fmt.Printf("here2")
+		go func() {
+			eventChan <- "start"
+		}()
 		return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("game", gameid))
 	} else {
-		fmt.Printf("here3")
 		return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("gameFull"))
 	}
 }
@@ -148,25 +146,13 @@ func sseGame(c echo.Context) error {
 	// TODO: change this for production
 	c.Response().Header().Set("Access-Control-Allow-Origin", "*")
 
-	progress := 0
 	for {
-		fmt.Printf("progress %v", progress)
-		fmt.Fprintf(c.Response(), "message: %v\n", "progress")
-		fmt.Fprintf(c.Response(), "data: %v\n\n", progress)
+		event := <-eventChan
+		fmt.Printf("event %v", event)
+		fmt.Fprintf(c.Response(), "data: %s\n", event)
+		fmt.Fprintf(c.Response(), "id: %s\n\n", gameid)
 		c.Response().Flush()
-
-		progress++
-		time.Sleep(2 * time.Second)
 	}
-
-	// for {
-	// 	event := <-eventChan
-	// 	fmt.Printf("event %v", event)
-	// 	fmt.Fprintf(c.Response(), "event: %s\n", event)
-	// 	fmt.Fprintf(c.Response(), "data: %s\n", "hello")
-	// 	fmt.Fprintf(c.Response(), "id: %s\n\n", gameid)
-	// 	c.Response().Flush()
-	// }
 }
 
 func wsGame(c echo.Context) error {
