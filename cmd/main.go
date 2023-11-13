@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"net/url"
 
+	"slices"
+
 	"Matthieu-OD/card_game_sixty_six/cmd/dbutils"
 	"Matthieu-OD/card_game_sixty_six/cmd/game"
 	"Matthieu-OD/card_game_sixty_six/cmd/wsutils"
@@ -39,8 +41,6 @@ func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c 
 func main() {
 	sqldb, ctx := dbutils.SetupDB()
 	defer sqldb.Close()
-
-	game.GameIDToEventChan = make(map[string]chan string)
 
 	e := echo.New()
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -112,29 +112,25 @@ func waitingOpponent(c echo.Context) error {
 
 func joinGame(c echo.Context) error {
 	gameid := c.Param("gameid")
+	eventChan, exists := game.GameWaitingForOpponent[gameid]
 
-	eventChan, exists := game.GameIDToEventChan[gameid]
-	fmt.Printf("eventChan %v, exists %v", eventChan, exists)
-
-	if exists {
+	if !exists && slices.Contains(game.GameInProgress, gameid) {
+		return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("gameFull"))
+	} else {
 		go func() {
 			eventChan <- "start"
+			delete(game.GameWaitingForOpponent, gameid)
+			game.GameInProgress = append(game.GameInProgress, gameid)
 		}()
 		return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("game", gameid))
-	} else {
-		return c.Redirect(http.StatusPermanentRedirect, c.Echo().Reverse("gameFull"))
 	}
 }
 
 func sseGame(c echo.Context) error {
 	gameid := c.Param("gameid")
 
-	eventChan, exists := game.GameIDToEventChan[gameid]
-
-	if !exists {
-		eventChan = make(chan string)
-		game.GameIDToEventChan[gameid] = eventChan
-	}
+	eventChan := make(chan string)
+	game.GameWaitingForOpponent[gameid] = eventChan
 
 	c.Response().Header().Set("Content-Type", "text/event-stream")
 	c.Response().Header().Set("Cache-Control", "no-cache")

@@ -19,3 +19,6 @@ type Game struct {
 
 	Turn int
 }
+
+var GameWaitingForOpponent = make(map[string]chan string)
+var GameInProgress []string
