@@ -14,3 +14,10 @@ window.htmx = htmx
 Alpine.data('copyToClipboard', copyToClipboard)
 
 Alpine.start()
+
+// Dynamically import the sse.js extension when needed
+import('htmx.org/dist/ext/sse.js').then(() => {
+	console.log('Loaded sse.js');
+}).catch((error) => {
+	console.error('Error loading sse.js:', error);
+});
